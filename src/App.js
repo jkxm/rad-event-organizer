@@ -5,10 +5,9 @@ import EventTable from './components/Event';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header>
         RAD App
-
       </header>
       <EventTable/>
     </div>

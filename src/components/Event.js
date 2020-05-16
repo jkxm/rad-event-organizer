@@ -10,24 +10,48 @@ class EventTable extends Component {
       eventItems:[],
       selectedEvent:null,
     };
+
+    this.refreshEvents = this.refreshEvents.bind();
   }
 
-  // componentDidMount(){
-  // //api get here
-  // }
+
+
+  async componentDidMount() {
+    try {
+      const response = await fetch('https://4jkbhwdpoi.execute-api.us-east-1.amazonaws.com/events');
+      let responseJson = await response.json();
+      console.log(responseJson);
+      this.setState(
+        {
+          isLoading: false,
+          eventItems: responseJson
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  async refreshEvents(){
+
+  }
+
 
   render(){
+    const {error, isLoaded, eventItems} = this.state;
     return <div>
       <table>
-        <th>Organizer</th>
-        <th>Venue</th>
-        <th>Date</th>
+        <tr>
+          <th>Organizer</th>
+          <th>Venue</th>
+          <th>Date</th>
+        </tr>
 
-        // event component here
+        {eventItems.map(event=>{
+          return <Event event={event}/>
+        })}
       </table>
-
-
-    eventtable
 
     </div>
   }
@@ -40,9 +64,17 @@ class Event extends Component {
   }
 
   render(){
-    return <tr>
+    return <tr key={this.props.event.id}>
       <td>
-        event details
+        {this.props.event.organizer}
+      </td>
+
+      <td>
+        {this.props.event.venue}
+      </td>
+
+      <td>
+        {this.props.event.date}
       </td>
     </tr>
   }

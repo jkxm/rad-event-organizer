@@ -11,12 +11,17 @@ class EventTable extends Component {
       selectedEvent:null,
     };
 
-    this.refreshEvents = this.refreshEvents.bind();
+    this.refreshEvents = this.refreshEvents.bind(this);
   }
 
 
 
   async componentDidMount() {
+    this.refreshEvents();
+  }
+
+
+  async refreshEvents(){
     try {
       const response = await fetch('https://4jkbhwdpoi.execute-api.us-east-1.amazonaws.com/events');
       let responseJson = await response.json();
@@ -30,11 +35,6 @@ class EventTable extends Component {
     } catch (error) {
       console.error(error);
     }
-  }
-
-
-  async refreshEvents(){
-
   }
 
 
@@ -52,7 +52,7 @@ class EventTable extends Component {
           return <Event event={event}/>
         })}
       </table>
-
+      <button onClick={this.refreshEvents}>Refresh / Read</button>
     </div>
   }
 }

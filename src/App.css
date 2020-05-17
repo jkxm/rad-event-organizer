@@ -45,6 +45,9 @@ button {
 header{
     text-align: center;
 }
+legend{
+  text-align: center;
+}
 
 .eventTable tr{
   border: 1px solid black
@@ -68,6 +71,10 @@ header{
 }
 
 .eventForm{
-  margin-left: 10vw;
+  /* margin-left: 10vw; */
 
+}
+
+.selected{
+  background: #b3d9ff;
 }

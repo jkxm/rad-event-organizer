@@ -44,7 +44,7 @@ class App extends Component {
           Welcome to the Ride-and-Drive Event Database!
         </header>
         <EventTable refreshEvents={this.refreshEvents} eventItems={this.state.eventItems}/>
-        <EventForm refreshEvents={this.refreshEvents}/>
+
       </div>
   }
 }

@@ -1,19 +1,52 @@
-import React from 'react';
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import EventTable from './components/Event';
 import EventForm from './components/Form';
 
-function App() {
-  return (
-    <div>
-      <header>
-        RAD App
-      </header>
-      <EventTable/>
-      <EventForm />
-    </div>
-  );
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      isLoading:true,
+      eventItems:[],
+      selectedEvent:null,
+    }
+    this.refreshEvents = this.refreshEvents.bind(this);
+  }
+
+  async componentDidMount() {
+    this.refreshEvents();
+  }
+
+  async refreshEvents(){
+    try {
+      const response = await fetch('https://4jkbhwdpoi.execute-api.us-east-1.amazonaws.com/events');
+      let responseJson = await response.json();
+      console.log(responseJson);
+      this.setState(
+        {
+          isLoading: false,
+          eventItems: responseJson
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  render(){
+    return <div>
+        <header>
+          Welcome to the Ride-and-Drive Event Database!
+        </header>
+        <EventTable refreshEvents={this.refreshEvents} eventItems={this.state.eventItems}/>
+        <EventForm refreshEvents={this.refreshEvents}/>
+      </div>
+  }
 }
 
 export default App;

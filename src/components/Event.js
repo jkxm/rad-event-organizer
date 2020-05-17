@@ -7,41 +7,43 @@ class EventTable extends Component {
     this.state = {
       error:null,
       isLoaded:false,
-      eventItems:[],
+      // eventItems:[],
       selectedEvent:null,
     };
 
-    this.refreshEvents = this.refreshEvents.bind(this);
+    // this.refreshEvents = this.refreshEvents.bind(this);
   }
 
 
 
-  async componentDidMount() {
-    this.refreshEvents();
-  }
+  // async componentDidMount() {
+  //   this.refreshEvents();
+  // }
+  //
+  //
+  // async refreshEvents(){
+  //   try {
+  //     const response = await fetch('https://4jkbhwdpoi.execute-api.us-east-1.amazonaws.com/events');
+  //     let responseJson = await response.json();
+  //     console.log(responseJson);
+  //     this.setState(
+  //       {
+  //         isLoading: false,
+  //         eventItems: responseJson
+  //       },
+  //     );
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
-
-  async refreshEvents(){
-    try {
-      const response = await fetch('https://4jkbhwdpoi.execute-api.us-east-1.amazonaws.com/events');
-      let responseJson = await response.json();
-      console.log(responseJson);
-      this.setState(
-        {
-          isLoading: false,
-          eventItems: responseJson
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
 
   render(){
-    const {error, isLoaded, eventItems} = this.state;
-    return <div>
-      <table>
+    const {error, isLoaded} = this.state;
+    const eventItems = this.props.eventItems;
+    return <div className="eventTable">
+      <table >
         <tr>
           <th>Organizer</th>
           <th>Venue</th>
@@ -52,7 +54,8 @@ class EventTable extends Component {
           return <Event event={event}/>
         })}
       </table>
-      <button onClick={this.refreshEvents}>Refresh / Read</button>
+      <br></br>
+      <button onClick={this.props.refreshEvents}>Refresh / Read</button>
     </div>
   }
 }

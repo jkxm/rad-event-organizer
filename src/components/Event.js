@@ -9,7 +9,6 @@ class EventTable extends Component {
       error:null,
       isLoaded:false,
       selectedEventId:null,
-      // eventToForm:{}
     };
 
     this.updateSelectedEvent = this.updateSelectedEvent.bind(this);
@@ -17,15 +16,9 @@ class EventTable extends Component {
   }
 
   updateSelectedEvent(eventId){
-    // let eventItems = this.props.eventItems;
-    // eventItems.forEach((item) => {
-    //   if(item.id === eventId){
         this.setState({
           selectedEventId:eventId,
-          // eventToForm:item,
         });
-      // }
-    // });
 
   }
 
@@ -48,10 +41,8 @@ class EventTable extends Component {
     }
     this.setState({
       selectedEventId:null
-    })
-
+    });
   }
-
 
   render(){
     // console.log(this.state)
@@ -62,27 +53,32 @@ class EventTable extends Component {
     if(selectedEventId){
       delButton = <button onClick={this.deleteSelectedEvent}> Delete Event </button>;
     }
-    return <div className="eventTable">
-      <table >
-        <tr>
-          <th>Organizer</th>
-          <th>Venue</th>
-          <th>Date</th>
-        </tr>
+    return <div>
+      <div className="eventTable">
+        <table >
+          <tr>
+            <th>Organizer</th>
+            <th>Venue</th>
+            <th>Date</th>
+          </tr>
 
-        {eventItems.map(event=>{
-          if(event.id === selectedEventId){
-            return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass='selected'/>
-          }
-          return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass=''/>
-        })}
+          {eventItems.map(event=>{
+            if(event.id === selectedEventId){
+              return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass='selected'/>
+            }
+            return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass=''/>
+          })}
 
-      </table>
+        </table>
+        <br></br>
+        <button onClick={this.props.refreshEvents}>Refresh / Read</button>
+        {delButton}
+      </div>
+
+      <div>
       <br></br>
-      <button onClick={this.props.refreshEvents}>Refresh / Read</button>
-      {delButton}
-
-      <EventForm refreshEvents={this.props.refreshEvents} radEventId={selectedEventId} />
+        <EventForm refreshEvents={this.props.refreshEvents} radEventId={selectedEventId} />
+      </div>
     </div>
   }
 }

@@ -40,13 +40,15 @@
 button {
   background-color: orange;
   border: 1px solid black;
+  margin-left: 1vw;
 }
 
 header{
-    text-align: center;
+    margin-left: 10vw;
+    font-weight: bold;
 }
 legend{
-  text-align: center;
+  margin-left: 10vw;
 }
 
 .eventTable tr{
@@ -59,22 +61,23 @@ legend{
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: 80%;
-  /* border: 1px solid black */
+  width: 80vw;
 }
-.eventTable button{
-  margin-left: 10vw;
-}
+
 .eventTable{
-  width: 100vw;
+  margin-left: 10vw;
   float:left;
 }
 
 .eventForm{
-  /* margin-left: 10vw; */
-
+  margin-left: 10vw;
+  float: left;
+  border-collapse: collapse;
+}
+.eventForm header{
+  margin-left: 0vw;
 }
 
 .selected{
-  background: #b3d9ff;
+  background: #80dfff;
 }

@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 
 
 class EventForm extends Component {
-  constructor(props){
-    super(props);
-    // console.log(props.radEvent)
+  constructor(){
+    super();
     this.state = {
         eventOrganizer:'',
         eventVenue:'',
@@ -14,23 +13,6 @@ class EventForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateSelectedEvent = this.updateSelectedEvent.bind(this);
   }
-
-  // componentDidUpdate(){
-  //   let radEvent = this.props.radEvent;
-  //   // console.log(radEvent, this.state);
-  //   if(Object.keys(radEvent).length!==0){
-  //
-  //   }
-  //
-  // }
-  //
-  // updateState(event){
-  //   this.setState({
-  //     eventOrganizer:radEvent.organizer,
-  //     eventVenue:radEvent.venue,
-  //     eventDate:radEvent.date
-  //   });
-  // }
 
   async handleSubmit(){
     let data = this.state;
@@ -58,7 +40,6 @@ class EventForm extends Component {
     let options = {
       method:'PUT',
       mode:'cors',
-      dataType: "json",
       body:JSON.stringify(data)
     };
 
@@ -73,7 +54,6 @@ class EventForm extends Component {
     }
   }
 
-
   formChangeHandler = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
@@ -85,14 +65,14 @@ class EventForm extends Component {
 
   render(){
     let updateBtn;
-    // let radEvent = this.props.radEvent;
     if(this.props.radEventId){
       updateBtn = <button onClick={this.updateSelectedEvent}>Update Event</button>
     }
     return <div className="eventForm">
       <br></br>
+      <header>Add Event</header>
       <form>
-          <legend>Add Event</legend>
+
           <table>
             <tr>
               <td>Organizer</td>

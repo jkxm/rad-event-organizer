@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   render(){
-    return <div>
+    return <div className="event">
         <header>
           Welcome to the Ride-and-Drive Event Database!
         </header>

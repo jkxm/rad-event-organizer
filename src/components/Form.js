@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import { Textbox } from 'react-inputs-validation';
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 
 class EventForm extends Component {
@@ -16,6 +14,7 @@ class EventForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateSelectedEvent = this.updateSelectedEvent.bind(this);
     this.checkFormState = this.checkFormState.bind(this);
+    this.setForbiddenStatus = this.setForbiddenStatus.bind(this);
   }
 
   async handleSubmit(){
@@ -24,7 +23,6 @@ class EventForm extends Component {
       this.setState({
         error:"Please fill in all fields."
       })
-
       return
     }
 
@@ -41,9 +39,12 @@ class EventForm extends Component {
     console.log(responseJson)
     const status = await response.status;
 
-    if(status == 200){
+    if(status === 200){
       this.props.refreshEvents();
-      console.log('fetched');
+      console.log('added');
+    }
+    if(status === 403){
+      this.setForbiddenStatus()
     }
   }
 
@@ -53,7 +54,6 @@ class EventForm extends Component {
       this.setState({
         error:"Please fill in all fields."
       })
-
       return
     }
 
@@ -70,9 +70,12 @@ class EventForm extends Component {
     console.log(responseJson)
     const status = await response.status;
 
-    if(status == 200){
+    if(status === 200){
       this.props.refreshEvents();
       console.log('updated');
+    }
+    if(status === 403){
+      this.setForbiddenStatus()
     }
   }
 
@@ -94,21 +97,24 @@ class EventForm extends Component {
     }
   }
 
+  setForbiddenStatus(){
+    this.setState({
+      error:"Entered a duplicate event. Entry not submitted."
+    })
+  }
+
   formChangeHandler = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({
         [nam]:val
     });
-
-    console.log(this.state);
   }
 
   render(){
     let updateBtn;
     let error;
     let today = new Date().toISOString().slice(0,10);
-    console.log(today);
     if(this.state.error){
       error = this.state.error;
     }
@@ -120,8 +126,8 @@ class EventForm extends Component {
       <header>Add Event</header>
       <p>{error}</p>
       <form>
-
           <table>
+          <tbody>
             <tr>
               <td>Organizer</td>
               <td>
@@ -136,6 +142,7 @@ class EventForm extends Component {
               <td>Date</td>
               <td><input type="date" id="eventDate" name="eventDate" onChange={this.formChangeHandler} min={today} required/></td>
             </tr>
+          </tbody>
           </table>
         </form>
         <br></br>

@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import EventForm from './Form';
 
 class EventTable extends Component {
   constructor(){
     super();
     this.state = {
-      error:null,
-      isLoaded:false,
       selectedEventId:null,
     };
 
@@ -35,7 +32,7 @@ class EventTable extends Component {
     console.log(responseJson)
     const status = await response.status;
 
-    if(status == 200){
+    if(status === 200){
       this.props.refreshEvents();
       console.log('deleted');
     }
@@ -46,7 +43,7 @@ class EventTable extends Component {
 
   render(){
     // console.log(this.state)
-    const {error, isLoaded, selectedEventId} = this.state;
+    const {selectedEventId} = this.state;
     const eventItems = this.props.eventItems;
 
     let delButton;
@@ -56,6 +53,7 @@ class EventTable extends Component {
     return <div>
       <div className="eventTable">
         <table >
+          <tbody>
           <tr>
             <th>Organizer</th>
             <th>Venue</th>
@@ -64,11 +62,11 @@ class EventTable extends Component {
 
           {eventItems.map(event=>{
             if(event.id === selectedEventId){
-              return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass='selected'/>
+              return <Event key={event.id} event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass='selected'/>
             }
-            return <Event event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass=''/>
+            return <Event key={event.id} event={event} updateSelectedEvent={this.updateSelectedEvent} componentClass=''/>
           })}
-
+        </tbody>
         </table>
         <br></br>
         <button onClick={this.props.refreshEvents}>Refresh / Read</button>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-
+import { Textbox } from 'react-inputs-validation';
+import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 
 class EventForm extends Component {
   constructor(){
@@ -8,13 +9,25 @@ class EventForm extends Component {
     this.state = {
         eventOrganizer:'',
         eventVenue:'',
-        eventDate:''
+        eventDate:'',
+        valid:false,
+        error:null
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateSelectedEvent = this.updateSelectedEvent.bind(this);
+    this.checkFormState = this.checkFormState.bind(this);
   }
 
   async handleSubmit(){
+    await this.checkFormState();
+    if(!this.state.valid){
+      this.setState({
+        error:"Please fill in all fields."
+      })
+
+      return
+    }
+
     let data = this.state;
     let options = {
       method:'POST',
@@ -35,6 +48,15 @@ class EventForm extends Component {
   }
 
   async updateSelectedEvent(){
+    await this.checkFormState();
+    if(!this.state.valid){
+      this.setState({
+        error:"Please fill in all fields."
+      })
+
+      return
+    }
+
     let data = this.state;
     data.eventId = this.props.radEventId;
     let options = {
@@ -54,29 +76,57 @@ class EventForm extends Component {
     }
   }
 
+  async checkFormState(){
+    let eventOrganizer = this.state.eventOrganizer;
+    let eventVenue = this.state.eventVenue;
+    let eventDate = this.state.eventDate;
+
+    if(eventOrganizer && eventVenue && eventDate){
+      await this.setState({
+        valid:true,
+        error:null
+      });
+    }
+    else{
+      await this.setState({
+        valid:false
+      })
+    }
+  }
+
   formChangeHandler = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({
         [nam]:val
     });
+
     console.log(this.state);
   }
 
   render(){
     let updateBtn;
+    let error;
+    let today = new Date().toISOString().slice(0,10);
+    console.log(today);
+    if(this.state.error){
+      error = this.state.error;
+    }
     if(this.props.radEventId){
       updateBtn = <button onClick={this.updateSelectedEvent}>Update Event</button>
     }
     return <div className="eventForm">
       <br></br>
       <header>Add Event</header>
+      <p>{error}</p>
       <form>
 
           <table>
             <tr>
               <td>Organizer</td>
-              <td><input type="text" id="eventOrganizer" name="eventOrganizer" onChange={this.formChangeHandler} required/></td>
+              <td>
+                <input type="text" id="eventOrganizer" name="eventOrganizer" onChange={this.formChangeHandler} required/>
+              </td>
             </tr>
             <tr>
               <td>Venue</td>
@@ -84,7 +134,7 @@ class EventForm extends Component {
             </tr>
             <tr>
               <td>Date</td>
-              <td><input type="date" id="eventDate" name="eventDate" onChange={this.formChangeHandler} required/></td>
+              <td><input type="date" id="eventDate" name="eventDate" onChange={this.formChangeHandler} min={today} required/></td>
             </tr>
           </table>
         </form>
